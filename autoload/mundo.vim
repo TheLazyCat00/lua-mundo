@@ -450,9 +450,7 @@ endfunction "}}}
 
 "{{{ Misc
 
-" automatically reload Mundo buffer if open
 function! s:MundoRefresh() "{{{
-    " abort if Mundo is closed or cursor is in the preview window
     let mundoWin    = bufwinnr('__Mundo__')
     let mundoPreWin = bufwinnr('__Mundo_Preview__')
     let currentWin  = bufwinnr('%')
@@ -461,45 +459,10 @@ function! s:MundoRefresh() "{{{
         return
     endif
 
-    " Disable the automatic preview delay if vim lacks support for timers
-    if g:mundo_auto_preview_delay > 0 && !s:has_timers
-        let g:mundo_auto_preview_delay = 0
-        call mundo#util#Echo('WarningMsg',
-                    \ 'The "g:mundo_auto_preview_delay" option requires'
-                    \ .' support for timers. Please upgrade to either vim 8.0+'
-                    \ .' (with +timers) or neovim to use this feature. Press '
-                    \ .'any key to continue.')
+    call s:MundoPythonRestoreView('MundoRenderGraph()')
 
-        " Prevent the warning being cleared
-        call getchar()
-    endif
-
-    " Handle normal refresh
-    if g:mundo_auto_preview_delay <= 0
-        call s:MundoPythonRestoreView('MundoRenderGraph()')
-
-        if g:mundo_auto_preview && currentWin == mundoWin && mode() == 'n'
-            call s:MundoRenderPreview()
-        endif
-        return
-    endif
-
-    " Handle delayed refresh
-    call s:MundoRestartRefreshTimer()
-endfunction "}}}
-
-function! s:MundoRestartRefreshTimer() "{{{
-    call s:MundoStopRefreshTimer()
-    let s:auto_preview_timer = timer_start(
-                \ get(g:, 'mundo_auto_preview_delay', 0),
-                    \ function('s:MundoRefreshDelayed')
-                \ )
-endfunction "}}}
-
-function! s:MundoStopRefreshTimer() "{{{
-    if s:auto_preview_timer != -1
-        call timer_stop(s:auto_preview_timer)
-        let s:auto_preview_timer = -1
+    if g:mundo_auto_preview && currentWin == mundoWin && mode() == 'n'
+        call s:MundoRenderPreview()
     endif
 endfunction "}}}
 
@@ -530,26 +493,18 @@ function! s:MundoRefreshDelayed(...) "{{{
 endfunction "}}}
 
 " Mark the preview as being up-to-date (0) or outdated (1)
-function! mundo#MundoPreviewOutdated(outdated) "{{{
-    if s:preview_outdated && !a:outdated
-        call s:MundoStopRefreshTimer()
-    endif
 
+function! mundo#MundoPreviewOutdated(outdated) "{{{
     let s:preview_outdated = a:outdated
 endfunction "}}}
 
 augroup MundoAug
     autocmd!
     autocmd BufEnter __Mundo__ call mundo#MundoPreviewOutdated(1)
-    autocmd BufLeave __Mundo__
-                \ if g:mundo_auto_preview |
-                    \ call s:MundoRenderPreview() |
-                    \ call s:MundoStopRefreshTimer() |
-                \ endif |
+    autocmd BufLeave __Mundo__ if g:mundo_auto_preview | call s:MundoRenderPreview() | endif |
     autocmd BufEnter __Mundo__ call s:MundoSettingsGraph()
     autocmd BufEnter __Mundo_Preview__ call s:MundoSettingsPreview()
-    autocmd CursorHold,CursorMoved,TextChanged,InsertLeave *
-                \ call s:MundoRefresh()
+    autocmd CursorHold,CursorMoved,TextChanged,InsertLeave * call s:MundoRefresh()
 augroup END
 
 "}}}
