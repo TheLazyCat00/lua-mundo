@@ -1,7 +1,9 @@
 # lua-mundo
 
+[Demo](https://github.com/user-attachments/assets/b63a85cd-1600-4757-b26d-7727a929ff7b)
+
 This plugin is a fork of [vim-mundo](https://github.com/simnalamburt/vim-mundo).
-I made this fork because I wanted to have a lua entry point so I can configure mundo with [lazy.nvim](https://github.com/folke/lazy.nvim) just like every other plugin. This plugin also has a few improvements such as scheduling the diff preview so that the screen doesn't freeze when you hold down one of the move keys and a new option called `preview_debounce` which delay's the preview by the given amount of milliseconds.
+I made this fork because I wanted to have a lua entry point so I can configure mundo with [lazy.nvim](https://github.com/folke/lazy.nvim) just like every other plugin. This plugin also has a few improvements such as scheduling the diff preview so that the screen doesn't freeze when you hold down one of the move keys and a new option called `preview_debounce` which delay's the preview by the given amount in milliseconds.
 
 ## Configuration
 
