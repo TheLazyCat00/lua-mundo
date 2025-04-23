@@ -22,7 +22,7 @@ import mundo.graphlog as graphlog
 MISSING_BUFFER = "Cannot find Mundo's target buffer (%s)"
 MISSING_WINDOW = "Cannot find window (%s) for Mundo's target buffer (%s)"
 
-def _check_sanity():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+def _check_sanity():
     """ Check to make sure we're not crazy.
 
         Ensures that:
@@ -53,7 +53,7 @@ def _check_sanity():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
     if mode == 't':
         return False
 
-    return True# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    return True
 
 
 INLINE_HELP = '''\
@@ -72,13 +72,13 @@ INLINE_HELP = '''\
 
 '''
 
-# }}}
+
 
 nodesData = Nodes()
 
 # from profilehooks import profile
 # @profile(immediate=True)
-def MundoRenderGraph(force=False):# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+def MundoRenderGraph(force=False):
     """ Renders the undo graph if necessary, updating it to reflect changes in
         the target buffer's undo tree.
 
@@ -160,10 +160,10 @@ def MundoRenderGraph(force=False):# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
         except ValueError:
             pass
         i += 1
-    vim.command('%d' % (i+len(header)-1))# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    vim.command('%d' % (i+len(header)-1))
 
-def MundoRenderPreview():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoRenderPreview():
     """ Opens the preview window if necessary and renders a preview diff. """
     if not _check_sanity():
         return
@@ -187,20 +187,20 @@ def MundoRenderPreview():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
     util._output_preview_text(nodesData.preview_diff(node_before, node_after))
 
     # Mark the preview as up-to-date
-    vim.command('call mundo#MundoPreviewOutdated(0)')# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    vim.command('call mundo#MundoPreviewOutdated(0)')
 
-def MundoGetTargetState():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoGetTargetState():
     """ Get the current undo number that mundo is at. """
     util._goto_window_for_buffer('__Mundo__')
     target_line = vim.eval("getline('.')")
     matches = re.match(r'^[^\[]* \[([0-9]+)\] .*$', target_line)
     if matches:
         return int(matches.group(1))
-    return 0# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    return 0
 
-def GetNextLine(direction,move_count,write,start="line('.')"):# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def GetNextLine(direction,move_count,write,start="line('.')"):
     """ Recursively finds the line number resulting from undo graph traversal
         according to the given parameters.
     """
@@ -235,10 +235,10 @@ def GetNextLine(direction,move_count,write,start="line('.')"):# {{{{{{{{{{{{{{{{
             if direction > 0 and next_line >= len(vim.current.window.buffer):
                 return next_line
             return GetNextLine(direction,1,write,str(next_line))
-    return next_line# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    return next_line
 
-def MundoMove(direction,move_count=1,relative=True,write=False):# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoMove(direction,move_count=1,relative=True,write=False):
     """
     Move within the undo graph in the direction specified (or to the specific
     undo node specified).
@@ -297,10 +297,10 @@ def MundoMove(direction,move_count=1,relative=True,write=False):# {{{{{{{{{{{{{{
         vim.command("call cursor(0, %d + 1)" % idx3)
 
     # Mark the preview as outdated
-    vim.command('call mundo#MundoPreviewOutdated(1)')# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    vim.command('call mundo#MundoPreviewOutdated(1)')
 
-def MundoSearch():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoSearch():
     try:
         search = vim.eval("input('/')")
     except:
@@ -310,18 +310,18 @@ def MundoSearch():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
         return
 
     vim.command('let @/="%s"' % search.replace("\\", "\\\\").replace('"', '\\"'))
-    MundoNextMatch()# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    MundoNextMatch()
 
-def MundoPrevMatch():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-    MundoMatch(-1)# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
 
-def MundoNextMatch():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-    MundoMatch(1)# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+def MundoPrevMatch():
+    MundoMatch(-1)
 
-def MundoMatch(down):# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoNextMatch():
+    MundoMatch(1)
+
+
+def MundoMatch(down):
     """ Jump to the next node that matches the current pattern.  If there is a
     next node, search from the next node to the end of the list of changes.
     Stop on a match. """
@@ -359,10 +359,10 @@ def MundoMatch(down):# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
                 break
     util._goto_window_for_buffer('__Mundo__')
     if found_version >= 0:
-        MundoMove(found_version,1,False)# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+        MundoMove(found_version,1,False)
 
-def MundoRenderPatchdiff():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoRenderPatchdiff():
     """ Call MundoRenderChangePreview and display a vert diffpatch with the
     current file. """
     if MundoRenderChangePreview():
@@ -389,10 +389,10 @@ def MundoRenderPatchdiff():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
         vim.command('silent! keepalt vert diffpatch %s' % (filename))
         vim.command('setlocal buftype=nofile bufhidden=delete')
         return True
-    return False# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    return False
 
-def MundoGetChangesForLine():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoGetChangesForLine():
     if not _check_sanity():
         return False
 
@@ -412,10 +412,10 @@ def MundoGetChangesForLine():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
 
     node_after = nmap[target_state]
     node_before = nmap[nodesData.current()]
-    return nodesData.change_preview_diff(node_before, node_after)# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    return nodesData.change_preview_diff(node_before, node_after)
 
-def MundoRenderChangePreview():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoRenderChangePreview():
     """ Render a diff of the target buffer and the selected undo
         tree node. Returns True on success, False otherwise.
     """
@@ -429,10 +429,10 @@ def MundoRenderChangePreview():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
     # Mark the preview as up-to-date
     vim.command('call mundo#MundoPreviewOutdated(0)')
 
-    return True# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    return True
 
-def MundoRenderToggleInlineDiff():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoRenderToggleInlineDiff():
     """ Toggles g:mundo_inline_undo and redraws the graph window. """
     show_inline = int(vim.eval('g:mundo_inline_undo'))
     if show_inline == 0:
@@ -442,10 +442,10 @@ def MundoRenderToggleInlineDiff():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
     line = int(vim.eval("line('.')"))
     nodesData.clear_oneline_diffs()
     MundoRenderGraph(True)
-    vim.command("call cursor(%d,0)" % line)# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+    vim.command("call cursor(%d,0)" % line)
 
-def MundoToggleHelp():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoToggleHelp():
     """ Toggles g:mundo_help and redraws the graph window. """
     show_help = int(vim.eval('g:mundo_help'))
     if show_help == 0:
@@ -460,11 +460,11 @@ def MundoToggleHelp():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
     vim.command(
         "call cursor(%d, %d)" % (line + new_line_count - old_line_count,
                                  column)
-    )# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    )
 
 # Mundo undo/redo}}}}}}
 
-def MundoRevert():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+def MundoRevert():
     """ Reverts the target buffer to the state associated with a selected node
         in the undo graph.
     """
@@ -483,10 +483,10 @@ def MundoRevert():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
         util._goto_window_for_buffer(back)
 
     if int(vim.eval('g:mundo_close_on_revert')):
-        vim.command('MundoToggle')# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
+        vim.command('MundoToggle')
 
-def MundoPlayTo():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+
+def MundoPlayTo():
     """ Replays changes between the current state and a selected state in
         real-time.
     """
@@ -504,7 +504,7 @@ def MundoPlayTo():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
     start = nmap[nodesData.current()]
     end = nmap[target_n]
 
-    def _walk_branch(origin, dest):# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+    def _walk_branch(origin, dest):
         rev = origin.n < dest.n
         nodes = []
 
@@ -525,8 +525,8 @@ def MundoPlayTo():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
         if rev:
             return reversed(nodes)
         else:
-            return nodes# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-    # }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+            return nodes
+    
 
     branch = _walk_branch(start, end)
 
@@ -542,7 +542,4 @@ def MundoPlayTo():# {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
         util._goto_window_for_buffer(back)
         vim.command('redraw | sleep %dm' % delay)
 
-    util.normal('zN')# }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-# }}}
-
-#  vim: set ts=4 sw=4 tw=79 fdm=marker et :
+    util.normal('zN')
