@@ -197,11 +197,11 @@ def generate(verbose, num_header_lines, first_visible_line, last_visible_line, i
             age_label = 'Original'
         line = '[%s] %s' % (node.n, age_label)
         if node.n == current:
-            char = '@'
+            char = ''
         elif node.saved:
-            char = 'w'
+            char = ''
         else:
-            char = 'o'
+            char = ''
         show_inine_diff = inline_graph and line_number >= first_visible_line and line_number <= last_visible_line
         preview_diff = nodesData.preview_diff(node.parent, node, False, show_inine_diff)
         line = '[%s] %-10s %s' % (node.n, age_label, preview_diff)
