@@ -6,7 +6,7 @@ I made this fork because I wanted to have a lua entry point so I can configure m
 ## Configuration
 
 You can configure lua just like every other lua plugin.
-The opts are the opts that already exist from mundo but just without the `mundo_` prefix.
+The opts are the same opts that already exist from mundo but just without the `mundo_` prefix.
 
 Here's an example config:
 
