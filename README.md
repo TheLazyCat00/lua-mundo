@@ -1,5 +1,40 @@
+# lua-mundo
+
+This plugin is a fork from [vim-mundo](https://github.com/simnalamburt/vim-mundo).
+I made this fork because I wanted to have a lua entry point so I can configure mundo with [lazy.nvim](https://github.com/folke/lazy.nvim) just like every other plugin. This plugin also has a few improvements such as scheduling the diff preview so that the screen doesn't freeze when you hold down one of the move keys and a new option called `preview_debounce` which delay's the preview by the given amount of milliseconds.
+
+## Configuration
+
+You can configure lua just like every other lua plugin.
+The opts are the opts that already exist from mundo but just without the `mundo_` prefix.
+
+Here's an example config:
+
+```lua
+return {
+    "TheLazyCat00/lua-mundo",
+    event = "UIEnter",
+    opts = {
+        auto_preview = 1,
+        right = 1,
+        preview_debounce = 0,
+    },
+    keys = {
+        { "<leader>cu", "<Cmd>MundoToggle<CR>", "Toggle undotree" }
+    }
+}
+```
+
+Take a look at the [original vim-mundo docs](https://simnalamburt.github.io/vim-mundo/) to see all available options.
+
+---
+
+#
+# Original README:
+---
 vim-mundo
 =========
+
 A Vim plugin to visualizes the Vim [undo tree].
 
 <img src="https://simnalamburt.github.io/vim-mundo/screenshot.png">
