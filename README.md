@@ -28,7 +28,7 @@ return {
 Take a look at the [original vim-mundo docs](https://simnalamburt.github.io/vim-mundo/) to see all available options.
 
 ---
-# Original README:
+> Original README:
 
 vim-mundo
 =========
