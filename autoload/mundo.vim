@@ -444,6 +444,25 @@ function! s:MundoRenderPreview(...) "{{{
     endif
 
     call s:MundoPythonRestoreView('MundoRenderPreview()')
+
+function! s:MundoCancelPreviewTimer()
+    if s:auto_preview_timer != -1
+        call timer_stop(s:auto_preview_timer)
+        let s:auto_preview_timer = -1
+    endif
+endfunction
+
+function! s:MundoRenderPreviewAsync(...) abort
+    if !s:has_timers
+        " Fallback to sync if timers not supported
+        return call('s:MundoRenderPreview', a:000)
+    endif
+    call s:MundoCancelPreviewTimer()
+    let delay = get(g:, 'mundo_preview_debounce', 100)
+    let args = a:000
+    let s:auto_preview_timer = timer_start(delay, {-> execute('call s:MundoRenderPreview' . (len(args) ? '(' . join(args, ',') . ')' : '()'))})
+endfunction
+
 endfunction "}}}
 
 "}}}
@@ -462,7 +481,7 @@ function! s:MundoRefresh() "{{{
     call s:MundoPythonRestoreView('MundoRenderGraph()')
 
     if g:mundo_auto_preview && currentWin == mundoWin && mode() == 'n'
-        call s:MundoRenderPreview()
+        call s:MundoRenderPreviewAsync()
     endif
 endfunction "}}}
 
@@ -489,7 +508,7 @@ function! s:MundoRefreshDelayed(...) "{{{
         return
     endif
 
-    call s:MundoRenderPreview()
+    call s:MundoRenderPreviewAsync()
 endfunction "}}}
 
 " Mark the preview as being up-to-date (0) or outdated (1)
