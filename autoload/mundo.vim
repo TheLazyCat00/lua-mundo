@@ -458,7 +458,7 @@ function! s:MundoRenderPreviewAsync(...) abort
         return call('s:MundoRenderPreview', a:000)
     endif
     call s:MundoCancelPreviewTimer()
-    let delay = get(g:, 'mundo_preview_debounce', 100)
+    let delay = get(g:, 'mundo_preview_debounce', 0)
     let args = a:000
     let s:auto_preview_timer = timer_start(delay, {-> execute('call s:MundoRenderPreview' . (len(args) ? '(' . join(args, ',') . ')' : '()'))})
 endfunction

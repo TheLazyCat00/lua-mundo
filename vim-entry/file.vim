@@ -17,6 +17,8 @@ let loaded_mundo = 1 "}}}
 
 " Default option values{{{
 
+call mundo#util#set_default('g:mundo_preview_debounce', 0)
+
 call mundo#util#set_default(
             \ 'g:mundo_auto_preview', 1,
             \ 'g:gundo_auto_preview')
